@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Scanner;
 
 namespace CSHarpInterpreter
 {
@@ -20,9 +22,39 @@ namespace CSHarpInterpreter
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Scaner scaner;
+
         public MainWindow()
         {
             InitializeComponent();
+            LoadExampleText();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void LoadExampleText()
+        {
+            using (TextReader reader = File.OpenText("test.txt"))
+            {
+                TxtBoxInput.Text += reader.ReadToEnd();
+            }
+        }
+
+        private void BtnScan_Click(object sender, RoutedEventArgs e)
+        {
+
+            scaner = new Scaner(this.TxtBoxInput.Text);
+
+            scaner.ScanText();
+
+            foreach (Token t in this.scaner.ResultTokens)
+            {
+                this.TxtBlockResult.Text += t.Value + " - " + t.TokenType.ToString("G");
+                this.TxtBlockResult.Text += Environment.NewLine;
+            }
         }
     }
 }

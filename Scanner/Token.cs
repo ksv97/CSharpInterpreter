@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace Scanner
 {
+    /// <summary>
+    /// Class that represents token received from scanner
+    /// </summary>
     public class Token
     {
+        public readonly TokenType TokenType;
+
+        public readonly string Value;
+
+        public Token(TokenType type, string value)
+        {
+            this.TokenType = type;
+            this.Value = value;
+        }
     }
 }
