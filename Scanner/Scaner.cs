@@ -117,6 +117,8 @@ namespace Scanner
                 case '/': AddTokenWithCurrentCharValue(TokenType.DIV); break;
                 case '%': AddTokenWithCurrentCharValue(TokenType.MOD); break;
                 case '*': AddTokenWithCurrentCharValue(TokenType.MULTIPLY);break;
+                case '+': AddTokenWithCurrentCharValue(TokenType.PLUS); break;
+                case '-': AddTokenWithCurrentCharValue(TokenType.MINUS); break;
                 case ';': AddTokenWithCurrentCharValue(TokenType.SEMICOLON); break;
                 case '(': AddTokenWithCurrentCharValue(TokenType.PARANTHESIS_START); break;
                 case ')': AddTokenWithCurrentCharValue(TokenType.PARANTHESIS_END); break;

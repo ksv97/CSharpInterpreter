@@ -45,7 +45,7 @@ namespace CSHarpInterpreter
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
         {
-
+            this.TxtBlockResult.Clear();
             scaner = new Scaner(this.TxtBoxInput.Text);
 
             scaner.ScanText();
