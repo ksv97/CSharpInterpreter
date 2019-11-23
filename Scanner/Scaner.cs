@@ -245,7 +245,12 @@ namespace Scanner
                 string tokenValue = firstChar.ToString() + secondChar.ToString();
                 ResultTokens.Add(new Token(caseTwoChars, tokenValue));
             }
-            else ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
+            else if (currentChar == firstChar)
+            {
+                string tokenValue = firstChar.ToString() + firstChar.ToString();
+                ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
+            }
+            else ThrowParseErrorException($"{firstChar.ToString()} or {secondChar.ToString()} expected.");
         }
 
         /// <summary>
@@ -268,6 +273,7 @@ namespace Scanner
             ResultTokens.Add(newToken);
             currentChain.Clear();
         }
+
 
         private void ThrowParseErrorException (string message)
         {
