@@ -62,6 +62,12 @@ namespace CSHarpInterpreter
                 this.TxtBlockResult.Text += t.Value + " - " + t.TokenType.ToString("G");
                 this.TxtBlockResult.Text += Environment.NewLine;
             }
+
+            this.TxtBlockResult.Text += "===VARIABLES===" + Environment.NewLine;
+            foreach (Variable variable in this.scaner.Variables)
+            {
+                this.TxtBlockResult.Text += variable.Name;
+            }
         }
     }
 }

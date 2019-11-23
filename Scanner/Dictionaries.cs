@@ -9,12 +9,12 @@ namespace Scanner
     /// <summary>
     /// Different dictionaries class that helps with language keywords and identifiers
     /// </summary>
-    public static class Dictionaries
+    internal static class Dictionaries
     {
         /// <summary>
         /// The list of keywords that's supported in language
         /// </summary>
-        public static readonly List<Token> LanguageKeywords = new List<Token>()
+        internal static readonly List<Token> LanguageKeywords = new List<Token>()
         {
             new Token("sqr", TokenType.SQR),
             new Token("sqrt", TokenType.SQRT),

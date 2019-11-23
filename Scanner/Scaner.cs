@@ -17,6 +17,11 @@ namespace Scanner
         public readonly List<Token> ResultTokens = new List<Token>();
 
         /// <summary>
+        /// Variables list that's received as a result of text scan.
+        /// </summary>
+        public readonly List<Variable> Variables = new List<Variable>();
+
+        /// <summary>
         /// A text to be scanned
         /// </summary>
         public readonly string TextToScan;
@@ -220,6 +225,10 @@ namespace Scanner
                 }
 
                 AddTokenFromCurrentChainValue(TokenType.VARIABLE);
+                if (!this.Variables.Any(x => x.Name == chain))
+                {
+                    this.Variables.Add(new Variable(chain));
+                }
             }
         }
 
@@ -273,7 +282,6 @@ namespace Scanner
             ResultTokens.Add(newToken);
             currentChain.Clear();
         }
-
 
         private void ThrowParseErrorException (string message)
         {
