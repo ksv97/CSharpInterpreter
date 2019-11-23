@@ -27,6 +27,8 @@ namespace Scanner
             new Token("else", TokenType.ELSE),
             new Token("do", TokenType.DO),
             new Token("while", TokenType.WHILE),
+            new Token("true", TokenType.TRUE),
+            new Token("false", TokenType.FALSE)
         };
     }
 }

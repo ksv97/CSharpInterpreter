@@ -148,7 +148,7 @@ namespace Scanner
             }
             else if (isMinusEncountered) // if we encountered minus sign, digits should follow them. If that's not happening, it's parse error in terms of language.
             {
-                throw new Exception("Parse error: after '-' sign there's no digit. It's not possible");
+                ThrowParseErrorException("After '-' sign there's no digit. It's not possible");
             }
         }
 
@@ -161,6 +161,11 @@ namespace Scanner
                 this.AddCharToChainAndAdvance();
                 AddAllDigitsToCurrentChain();
                 AddTokenFromCurrentChainValue(TokenType.DOUBLE_CONST);
+
+                if (currentChar.IsDoubleConstDelimeter())
+                {
+                    ThrowParseErrorException("Second double const delimeter ('.') in one numer is not possible.");
+                }
             }
             else
             {
@@ -171,6 +176,7 @@ namespace Scanner
             {
                 ThrowParseErrorException("Letters are not allowed in numeric constants declaration");
             }
+
         }
 
         private void AddAllDigitsToCurrentChain()
@@ -254,25 +260,13 @@ namespace Scanner
             if (currentChain.Length > 0)
             {
                 string chain = currentChain.ToString();
-                switch (chain)
-                {
-                    case "true":
-                        {
-                            AddTokenFromCurrentChainValue(TokenType.TRUE);
-                            return;
-                        }
-                    case "false":
-                        {
-                            AddTokenFromCurrentChainValue(TokenType.FALSE);
-                            return;
-                        }
-                }
 
                 Token languageKeyword = Dictionaries.LanguageKeywords.SingleOrDefault(x => x.Value == chain);
                 if (languageKeyword != null)
                 {
                     AddTokenFromCurrentChainValue(languageKeyword.TokenType);
-                    return;
+
+                    CheckAllowedCharacterAfterKeyword();
                 }
 
                 AddTokenFromCurrentChainValue(TokenType.VARIABLE);
@@ -331,6 +325,17 @@ namespace Scanner
             Token newToken = new Token(tokenType, currentChain.ToString());
             ResultTokens.Add(newToken);
             currentChain.Clear();
+        }
+
+        private void CheckAllowedCharacterAfterKeyword ()
+        {
+            char[] charsAllowedAfterKeyword = { '(', '{', ';', ' ', '/', ')' };
+
+            if (charsAllowedAfterKeyword.Any(x => x == currentChar))
+            {
+                return;
+            }
+            else ThrowParseErrorException("Bad character after keyword/identifier declaration");
         }
 
         private void ThrowParseErrorException (string message)
