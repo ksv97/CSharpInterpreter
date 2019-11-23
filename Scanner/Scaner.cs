@@ -47,6 +47,8 @@ namespace Scanner
             while (currentPosition < TextToScan.Length)
             {
                 SkipWhitespaces();
+                SkipComments();
+
                 if (currentChar == '-' || currentChar.IsDigit()) // done
                 {
                     ScanForNumericConstant();
@@ -81,6 +83,54 @@ namespace Scanner
             {
                 currentPosition++;
             }
+        }
+
+        private void SkipComments()
+        {
+            if (currentChar == '/')
+            {
+                currentPosition++;
+                if (currentChar == '/')
+                {
+                    this.SkipSigleLineComment();
+                    return;
+                }
+
+                if (currentChar == '*')
+                {
+                    this.SkipMultilineComment();
+                    return;
+                }
+
+                ThrowParseErrorException("Invalid token '/'");
+            }
+        }
+
+        private void SkipSigleLineComment()
+        {
+            while (currentChar != '\n')
+            {
+                currentPosition++;
+            }
+            currentPosition++;
+        }
+
+        private void SkipMultilineComment()
+        {
+            bool commentEnd = false;
+            do
+            {
+                currentPosition++;
+                if (currentChar == '*')
+                {
+                    currentPosition++;
+                    if (currentChar == '/')
+                    {
+                        commentEnd = true;
+                    }
+                }
+            } while (!commentEnd);
+            currentPosition++;
         }
 
         private void ScanForNumericConstant()
