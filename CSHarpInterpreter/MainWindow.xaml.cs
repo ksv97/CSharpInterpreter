@@ -48,7 +48,14 @@ namespace CSHarpInterpreter
             this.TxtBlockResult.Clear();
             scaner = new Scaner(this.TxtBoxInput.Text);
 
-            scaner.ScanText();
+            try
+            {
+                scaner.ScanText();
+            }
+            catch (ParseErrorException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             foreach (Token t in this.scaner.ResultTokens)
             {

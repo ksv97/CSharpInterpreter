@@ -39,13 +39,25 @@ namespace Scanner
 
         public void ScanText ()
         {
-            for (currentPosition = 0; currentPosition < TextToScan.Length; currentPosition++)
+            while (currentPosition < TextToScan.Length)
             {
                 SkipWhitespaces();
-                ScanForMeaningfulDelimeters();
-                ScanForNumericConstant();
-                ScanForKeywordsAndIdentifiers();
-                ScanForStringConstants();
+                if (currentChar == '-' || currentChar.IsDigit()) // done
+                {
+                    ScanForNumericConstant();
+                }
+                else if (char.IsLetter(currentChar)) // done
+                {
+                    ScanForKeywordsAndIdentifiers();
+                }
+                else if (currentChar == '"') // done
+                {
+                    ScanForStringConstants();
+                }
+                else // done
+                {
+                    ScanForMeaningfulDelimeters();
+                }
             }
         }
 
@@ -98,6 +110,11 @@ namespace Scanner
             {
                 AddTokenFromCurrentChainValue(TokenType.INT_CONST);
             }
+
+            if (char.IsLetter(currentChar))
+            {
+                ThrowParseErrorException("Letters are not allowed in numeric constants declaration");
+            }
         }
 
         private void AddAllDigitsToCurrentChain()
@@ -148,9 +165,10 @@ namespace Scanner
                         if (currentChar == '|')
                         {
                             ResultTokens.Add(new Token(TokenType.LOGICAL_OR, "||"));
-                            break;
+
                         }
-                        else throw new Exception("Parse error after symbol '|' at position" + currentPosition);
+                        else ThrowParseErrorException("'|' expected");
+                        break;
                     }
                 case '&':
                     {
@@ -160,11 +178,11 @@ namespace Scanner
                             ResultTokens.Add(new Token(TokenType.LOGICAL_AND, "&&"));
                             break;
                         }
-                        else throw new Exception("Parse error after symbol '&' at position" + currentPosition);
+                        else ThrowParseErrorException("'&' expected");
+                        break;
                     }
-
-
             }
+            currentPosition++;
         }
 
         /// <summary>
@@ -206,16 +224,13 @@ namespace Scanner
 
         private void ScanForStringConstants()
         {
-            if (currentChar == '"')
+            do
             {
-                do
-                {
-                    AddCharToChainAndAdvance();
-                }
-                while (currentChar != '"');
                 AddCharToChainAndAdvance();
-                AddTokenFromCurrentChainValue(TokenType.STRING_CONST);
             }
+            while (currentChar != '"');
+            AddCharToChainAndAdvance();
+            AddTokenFromCurrentChainValue(TokenType.STRING_CONST);
         }
 
         /// <summary>
@@ -251,6 +266,11 @@ namespace Scanner
             Token newToken = new Token(tokenType, currentChain.ToString());
             ResultTokens.Add(newToken);
             currentChain.Clear();
+        }
+
+        private void ThrowParseErrorException (string message)
+        {
+            throw new ParseErrorException(currentPosition, message);
         }
     }
 }

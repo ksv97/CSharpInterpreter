@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CharExtensions.cs" />
     <Compile Include="Dictionaries.cs" />
+    <Compile Include="ParseErrorException.cs" />
     <Compile Include="Scaner.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
