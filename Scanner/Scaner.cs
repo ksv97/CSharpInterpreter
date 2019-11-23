@@ -158,6 +158,7 @@ namespace Scanner
 
             if (currentChar.IsDoubleConstDelimeter())
             {
+                this.AddCharToChainAndAdvance();
                 AddAllDigitsToCurrentChain();
                 AddTokenFromCurrentChainValue(TokenType.DOUBLE_CONST);
             }
@@ -304,7 +305,11 @@ namespace Scanner
                 string tokenValue = firstChar.ToString() + secondChar.ToString();
                 ResultTokens.Add(new Token(caseTwoChars, tokenValue));
             }
-            else ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
+            else
+            {
+                ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
+                currentPosition--; // rollback position change in case we've found non-two characters delimeter.
+            }
         }
 
         /// <summary>
