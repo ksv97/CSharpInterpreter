@@ -13,11 +13,21 @@ namespace Scanner
     {
         // language keywords part
         VARIABLE,
-        LANGUAGE_KEYWORD,
+        SQR,
+        SQRT,
+        PRINT,
+        INT,
+        DOUBLE,
+        STRING,
+        BOOLEAN,
+        IF,
+        ELSE,
+        DO,
+        WHILE,
 
         // consts part
-        BOOLEAN_TRUE,
-        BOOLEAN_FALSE,
+        TRUE,
+        FALSE,
         INT_CONST,
         DOUBLE_CONST,
         STRING_CONST,

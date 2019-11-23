@@ -14,19 +14,19 @@ namespace Scanner
         /// <summary>
         /// The list of keywords that's supported in language
         /// </summary>
-        public static readonly List<string> LanguageKeywords = new List<string>()
+        public static readonly List<Token> LanguageKeywords = new List<Token>()
         {
-            "sqr",
-            "sqrt",
-            "print",
-            "int",
-            "double",
-            "string",
-            "boolean",
-            "if",
-            "else",
-            "do",
-            "while"
+            new Token("sqr", TokenType.SQR),
+            new Token("sqrt", TokenType.SQRT),
+            new Token("print", TokenType.PRINT),
+            new Token("int", TokenType.INT),
+            new Token("double", TokenType.DOUBLE),
+            new Token("string", TokenType.STRING),
+            new Token("boolean", TokenType.BOOLEAN),
+            new Token("if", TokenType.IF),
+            new Token("else", TokenType.ELSE),
+            new Token("do", TokenType.DO),
+            new Token("while", TokenType.WHILE),
         };
     }
 }

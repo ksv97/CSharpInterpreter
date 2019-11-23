@@ -20,5 +20,11 @@ namespace Scanner
             this.TokenType = type;
             this.Value = value;
         }
+
+        public Token(string value, TokenType type)
+        {
+            this.TokenType = type;
+            this.Value = value;
+        }
     }
 }

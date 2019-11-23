@@ -202,19 +202,20 @@ namespace Scanner
                 {
                     case "true":
                         {
-                            AddTokenFromCurrentChainValue(TokenType.BOOLEAN_TRUE);
+                            AddTokenFromCurrentChainValue(TokenType.TRUE);
                             return;
                         }
                     case "false":
                         {
-                            AddTokenFromCurrentChainValue(TokenType.BOOLEAN_FALSE);
+                            AddTokenFromCurrentChainValue(TokenType.FALSE);
                             return;
                         }
                 }
 
-                if (Dictionaries.LanguageKeywords.Contains(chain))
+                Token languageKeyword = Dictionaries.LanguageKeywords.SingleOrDefault(x => x.Value == chain);
+                if (languageKeyword != null)
                 {
-                    AddTokenFromCurrentChainValue(TokenType.LANGUAGE_KEYWORD);
+                    AddTokenFromCurrentChainValue(languageKeyword.TokenType);
                     return;
                 }
 
