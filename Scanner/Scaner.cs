@@ -254,12 +254,7 @@ namespace Scanner
                 string tokenValue = firstChar.ToString() + secondChar.ToString();
                 ResultTokens.Add(new Token(caseTwoChars, tokenValue));
             }
-            else if (currentChar == firstChar)
-            {
-                string tokenValue = firstChar.ToString() + firstChar.ToString();
-                ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
-            }
-            else ThrowParseErrorException($"{firstChar.ToString()} or {secondChar.ToString()} expected.");
+            else ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
         }
 
         /// <summary>
