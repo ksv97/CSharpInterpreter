@@ -280,6 +280,7 @@ namespace Scanner
                     AddTokenFromCurrentChainValue(languageKeyword.TokenType);
 
                     CheckAllowedCharacterAfterKeyword();
+                    return;
                 }
 
                 AddTokenFromCurrentChainValue(TokenType.VARIABLE);
