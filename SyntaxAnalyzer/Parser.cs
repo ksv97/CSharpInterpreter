@@ -177,12 +177,6 @@ namespace SyntaxAnalyzer
         /// <returns></returns>
         private bool NumFactor() // DONE
         {
-            if (CurrentTokenType == TokenType.PLUS || CurrentTokenType == TokenType.MINUS)
-            {
-                NextToken();
-                return NumFactor();
-            }
-
             if (CurrentTokenType == TokenType.PARANTHESIS_START)
             {
                 NextToken();
