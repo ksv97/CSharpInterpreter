@@ -140,6 +140,7 @@ namespace SyntaxAnalyzer
             
             while (CurrentTokenType == TokenType.PLUS || CurrentTokenType == TokenType.MINUS)
             {
+                NextToken();
                 if (NumTerm() == false)
                 {
                     return false;
@@ -161,7 +162,8 @@ namespace SyntaxAnalyzer
             }
 
             while (CurrentTokenType == TokenType.DIV || CurrentTokenType == TokenType.MULTIPLY || CurrentTokenType == TokenType.MOD)
-            {                
+            {
+                NextToken();
                 if (NumFactor() == false)
                 {
                     return false;
@@ -321,6 +323,7 @@ namespace SyntaxAnalyzer
 
             while (CurrentTokenType == TokenType.LOGICAL_OR)
             {
+                NextToken();
                 if (BoolTerm() == false)
                 {
                     return false;
@@ -344,17 +347,21 @@ namespace SyntaxAnalyzer
             NextToken();
             while (CurrentTokenType == TokenType.LOGICAL_AND)
             {
+                NextToken();
                 if (BoolNotFactor() == false)
                 {
                     return false;
                 }
-
-                NextToken();
             }
 
             return true;
         }
 
+
+        /// <summary>
+        /// Advances
+        /// </summary>
+        /// <returns></returns>
         private bool BoolNotFactor()
         {
             if (CurrentTokenType == TokenType.NOT)
@@ -366,15 +373,12 @@ namespace SyntaxAnalyzer
             return BoolFactor();
         }
 
+        /// <summary>
+        /// Advances
+        /// </summary>
+        /// <returns></returns>
         private bool BoolFactor()
-        {
-            if (CurrentTokenType == TokenType.VARIABLE
-                || CurrentTokenType == TokenType.TRUE
-                || CurrentTokenType == TokenType.FALSE)
-            {
-                return true;
-            }
-
+        {          
             if (CurrentTokenType == TokenType.PARANTHESIS_START)
             {
                 NextToken();
@@ -390,7 +394,21 @@ namespace SyntaxAnalyzer
                 else return false;                
             }
 
-            return BoolOp();
+            if (BoolOp() == true)
+            {
+                return true;
+            }
+
+            if (CurrentTokenType == TokenType.VARIABLE
+               || CurrentTokenType == TokenType.TRUE
+               || CurrentTokenType == TokenType.FALSE)
+            {
+                NextToken();
+                return true;
+            }
+
+            return false;
+            
         }
 
         private bool BoolOp()
@@ -405,6 +423,7 @@ namespace SyntaxAnalyzer
                 {
                     return NumExpression();
                 }
+                else return false;
             }
 
             if (BoolExpression() == true)
@@ -413,6 +432,7 @@ namespace SyntaxAnalyzer
                 {
                     return BoolExpression();
                 }
+                else return false;
             }
 
             if (StringExpression() == true)
@@ -421,6 +441,7 @@ namespace SyntaxAnalyzer
                 {
                     return StringExpression();
                 }
+                else return false;
             }
 
             return false;
@@ -504,23 +525,27 @@ namespace SyntaxAnalyzer
                 return false;
             }
 
-            NextToken();
             while (CurrentTokenType == TokenType.PLUS)
             {
+                NextToken();
                 if (StringTerm() == false)
                 {
                     return false;
                 }
-                NextToken();
             }
 
             return true;
         }
 
+        /// <summary>
+        /// Advances
+        /// </summary>
+        /// <returns></returns>
         private bool StringTerm()
         {
             if (CurrentTokenType == TokenType.STRING_CONST || CurrentTokenType == TokenType.VARIABLE)
             {
+                NextToken();
                 return true;
             }
 
