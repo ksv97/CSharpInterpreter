@@ -17,18 +17,22 @@ namespace Scanner
 
         public readonly int Position;
 
-        public Token(TokenType type, string value, int posiiton)
+        public readonly int Line;
+
+        public Token(TokenType type, string value, int posiiton, int line)
         {
             this.TokenType = type;
             this.Value = value;
-            this.Position = posiiton;
+            this.Position = posiiton + 1;
+            this.Line = line + 1;   
         }
 
-        public Token(string value, TokenType type, int position)
+        public Token(string value, TokenType type, int position, int line)
         {
             this.TokenType = type;
             this.Value = value;
-            this.Position = position;
+            this.Position = position + 1;
+            this.Line = line + 1;
         }
     }
 }

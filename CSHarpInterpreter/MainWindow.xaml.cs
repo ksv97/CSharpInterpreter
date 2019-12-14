@@ -58,6 +58,10 @@ namespace CSHarpInterpreter
             {
                 MessageBox.Show(ex.Message);
             }
+            catch (IndexOutOfRangeException)
+            {
+                // Do nothing, it's just a signal that the text ended.
+            }
 
             foreach (Token t in this.scaner.ResultTokens)
             {

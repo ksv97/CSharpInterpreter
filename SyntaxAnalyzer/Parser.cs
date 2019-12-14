@@ -98,7 +98,7 @@ namespace SyntaxAnalyzer
         /// <returns></returns>
         private bool DeclareNumStatement() // DONE
         {
-            if (CurrentTokenType != TokenType.INT || CurrentTokenType != TokenType.DOUBLE)
+            if (CurrentTokenType != TokenType.INT && CurrentTokenType != TokenType.DOUBLE)
             {
                 return false;
             }
@@ -138,40 +138,43 @@ namespace SyntaxAnalyzer
                 return false;
             }      
             
-            NextToken();
             while (CurrentTokenType == TokenType.PLUS || CurrentTokenType == TokenType.MINUS)
             {
                 if (NumTerm() == false)
                 {
                     return false;
                 }
-                NextToken();
             }
 
             return true;            
         }
 
+        /// <summary>
+        /// Checks the num term and advance in case of success.
+        /// </summary>
+        /// <returns></returns>
         private bool NumTerm()
         {
-            bool result = NumFactor();
-            if (result == false)
+            if (NumFactor() == false)
             {
-                return result;
+                return false;
             }
-            NextToken();
 
             while (CurrentTokenType == TokenType.DIV || CurrentTokenType == TokenType.MULTIPLY || CurrentTokenType == TokenType.MOD)
-            {
-                result = NumFactor();
-                if (result == true)
+            {                
+                if (NumFactor() == false)
                 {
-                    NextToken();
+                    return false;
                 }                
             }
 
-            return result;
+            return true;
         }
 
+        /// <summary>
+        /// Advances
+        /// </summary>
+        /// <returns></returns>
         private bool NumFactor() // DONE
         {
             if (CurrentTokenType == TokenType.PLUS || CurrentTokenType == TokenType.MINUS)
@@ -192,17 +195,20 @@ namespace SyntaxAnalyzer
                 NextToken();
                 if (CurrentTokenType == TokenType.PARANTHESIS_END)
                 {
+                    NextToken();
                     return true;
                 }
             }
 
            if (Sqr() == true)
             {
+                NextToken();
                 return true;
             }
 
            if (Sqrt() == true)
             {
+                NextToken();
                 return true;
             }
 
@@ -210,6 +216,7 @@ namespace SyntaxAnalyzer
                 || CurrentTokenType == TokenType.DOUBLE_CONST
                 || CurrentTokenType == TokenType.VARIABLE)
             {
+                NextToken();
                 return true;
             }
 
@@ -318,19 +325,21 @@ namespace SyntaxAnalyzer
                 return false;
             }
 
-            NextToken();
             while (CurrentTokenType == TokenType.LOGICAL_OR)
             {
                 if (BoolTerm() == false)
                 {
                     return false;
                 }
-                NextToken();
             }
 
             return true;
         }
 
+        /// <summary>
+        /// Checks bool term and advances in case of success.
+        /// </summary>
+        /// <returns></returns>
         private bool BoolTerm()
         {
             if (BoolNotFactor() == false)
@@ -730,23 +739,11 @@ namespace SyntaxAnalyzer
             return true;
         }
 
-        /// <summary>
-        /// Advances to the next token and checks if its type equals to expected 
-        /// </summary>
-        private void AdvanceAndCheckValidTokenType(TokenType expectedType)
-        {
-            NextToken();
-            if (CurrentTokenType != expectedType)
-            {
-                ThrowInvalidTokenException();
-            }
-        }
-
         private void NextToken() => this.currentToken = scaner.NextToken;
 
         private void ThrowInvalidTokenException()
         {
-            throw new InvalidOperationException($"Invalid token: {currentToken.Value} at position:{currentToken.Position} ");
+            throw new InvalidOperationException($"Error ({currentToken.Line}, {currentToken.Position}): Invalid token: {currentToken.Value}");
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Scanner
 
         private StringBuilder currentChain = new StringBuilder();
         private int currentPosition = 0;
+        private int currentLine = 0;
 
         private int currentTokenToSend = 0;
 
@@ -35,7 +36,14 @@ namespace Scanner
         {
             get
             {
-                return TextToScan[currentPosition];
+                try
+                {
+                    return TextToScan[currentPosition];
+                }
+                catch
+                {
+                    throw;
+                }
             }
         }
 
@@ -95,6 +103,15 @@ namespace Scanner
             while (currentChar.IsWhiteSpace())
             {
                 currentPosition++;
+            }
+            if (currentChar == '\r')
+            {
+                currentPosition++;
+                if (currentChar == '\n')
+                {
+                    currentPosition++;
+                    currentLine++;
+                }
             }
         }
 
@@ -239,7 +256,7 @@ namespace Scanner
                         currentPosition++;
                         if (currentChar == '|')
                         {
-                            ResultTokens.Add(new Token(TokenType.LOGICAL_OR, "||", currentPosition));
+                            ResultTokens.Add(new Token(TokenType.LOGICAL_OR, "||", currentPosition, currentLine));
 
                         }
                         else ThrowParseErrorException("'|' expected");
@@ -250,7 +267,7 @@ namespace Scanner
                         currentPosition++;
                         if (currentChar == '&')
                         {
-                            ResultTokens.Add(new Token(TokenType.LOGICAL_AND, "&&", currentPosition));
+                            ResultTokens.Add(new Token(TokenType.LOGICAL_AND, "&&", currentPosition, currentLine));
                             break;
                         }
                         else ThrowParseErrorException("'&' expected");
@@ -311,11 +328,11 @@ namespace Scanner
             if (currentChar == secondChar)
             {
                 string tokenValue = firstChar.ToString() + secondChar.ToString();
-                ResultTokens.Add(new Token(caseTwoChars, tokenValue, currentPosition));
+                ResultTokens.Add(new Token(caseTwoChars, tokenValue, currentPosition, currentLine));
             }
             else
             {
-                ResultTokens.Add(new Token(caseOneChar, firstChar.ToString(), currentPosition));
+                ResultTokens.Add(new Token(caseOneChar, firstChar.ToString(), currentPosition, currentLine));
                 currentPosition--; // rollback position change in case we've found non-two characters delimeter.
             }
         }
@@ -326,7 +343,7 @@ namespace Scanner
         /// <param name="tokenType"></param>
         private void AddTokenWithCurrentCharValue (TokenType tokenType)
         {
-            Token newToken = new Token(tokenType, currentChar.ToString(), currentPosition);
+            Token newToken = new Token(tokenType, currentChar.ToString(), currentPosition, currentLine);
             ResultTokens.Add(newToken);
         }
 
@@ -336,7 +353,7 @@ namespace Scanner
         /// <param name="tokenType"></param>
         private void AddTokenFromCurrentChainValue(TokenType tokenType)
         {
-            Token newToken = new Token(tokenType, currentChain.ToString(), currentPosition);
+            Token newToken = new Token(tokenType, currentChain.ToString(), currentPosition, currentLine);
             ResultTokens.Add(newToken);
             currentChain.Clear();
         }
