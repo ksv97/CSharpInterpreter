@@ -15,16 +15,20 @@ namespace Scanner
 
         public readonly string Value;
 
-        public Token(TokenType type, string value)
+        public readonly int Position;
+
+        public Token(TokenType type, string value, int posiiton)
         {
             this.TokenType = type;
             this.Value = value;
+            this.Position = posiiton;
         }
 
-        public Token(string value, TokenType type)
+        public Token(string value, TokenType type, int position)
         {
             this.TokenType = type;
             this.Value = value;
+            this.Position = position;
         }
     }
 }

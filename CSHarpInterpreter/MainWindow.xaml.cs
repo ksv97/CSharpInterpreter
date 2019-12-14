@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Scanner;
+using SyntaxAnalyzer;
 
 namespace CSHarpInterpreter
 {
@@ -23,6 +24,7 @@ namespace CSHarpInterpreter
     public partial class MainWindow : Window
     {
         private Scaner scaner;
+        private Parser parser;
 
         public MainWindow()
         {
@@ -37,13 +39,13 @@ namespace CSHarpInterpreter
 
         private void LoadExampleText()
         {
-            using (TextReader reader = File.OpenText("test.txt"))
+            using (TextReader reader = File.OpenText("mainText.txt"))
             {
                 TxtBoxInput.Text += reader.ReadToEnd();
             }
         }
 
-        private void BtnScan_Click(object sender, RoutedEventArgs e)
+        private void ScanText()
         {
             this.TxtBlockResult.Clear();
             scaner = new Scaner(this.TxtBoxInput.Text);
@@ -67,7 +69,23 @@ namespace CSHarpInterpreter
             foreach (Variable variable in this.scaner.Variables)
             {
                 this.TxtBlockResult.Text += variable.Name;
+                this.TxtBlockResult.Text += Environment.NewLine;
             }
+        }
+
+        private void BtnScan_Click(object sender, RoutedEventArgs e)
+        {
+            this.ScanText();
+            this.parser = new Parser(this.scaner);
+            try
+            {
+                parser.Parse();
+                MessageBox.Show("Parse completed successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Parse error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }            
         }
     }
 }

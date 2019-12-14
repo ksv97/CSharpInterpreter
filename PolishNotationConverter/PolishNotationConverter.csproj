@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE942BEA-8651-4243-A78C-EF2203418078}</ProjectGuid>
+    <ProjectGuid>{C81F6242-83D6-4982-A89D-1ABE498003C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scanner</RootNamespace>
-    <AssemblyName>Scanner</AssemblyName>
+    <RootNamespace>PolishNotationConverter</RootNamespace>
+    <AssemblyName>PolishNotationConverter</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,14 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharExtensions.cs" />
-    <Compile Include="Dictionaries.cs" />
-    <Compile Include="ParseErrorException.cs" />
-    <Compile Include="Scaner.cs" />
-    <Compile Include="Token.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Operator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TokenType.cs" />
-    <Compile Include="Variable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

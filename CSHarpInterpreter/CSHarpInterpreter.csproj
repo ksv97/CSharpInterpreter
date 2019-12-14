@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>CSHarpInterpreter</RootNamespace>
     <AssemblyName>CSHarpInterpreter</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\Scanner\Scanner.csproj">
       <Project>{ce942bea-8651-4243-a78c-ef2203418078}</Project>
       <Name>Scanner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SyntaxAnalyzer\SyntaxAnalyzer.csproj">
+      <Project>{7526d7e9-d8f2-4e45-b42c-7ae3ab48b710}</Project>
+      <Name>SyntaxAnalyzer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

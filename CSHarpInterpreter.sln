@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSHarpInterpreter", "CSHarpInterpreter\CSHarpInterpreter.csproj", "{804FB83D-E93C-4E11-A443-A9F6255C8D46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner", "Scanner\Scanner.csproj", "{CE942BEA-8651-4243-A78C-EF2203418078}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyntaxAnalyzer", "SyntaxAnalyzer\SyntaxAnalyzer.csproj", "{7526D7E9-D8F2-4E45-B42C-7AE3AB48B710}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PolishNotationConverter", "PolishNotationConverter\PolishNotationConverter.csproj", "{C81F6242-83D6-4982-A89D-1ABE498003C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{CE942BEA-8651-4243-A78C-EF2203418078}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE942BEA-8651-4243-A78C-EF2203418078}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE942BEA-8651-4243-A78C-EF2203418078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7526D7E9-D8F2-4E45-B42C-7AE3AB48B710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7526D7E9-D8F2-4E45-B42C-7AE3AB48B710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7526D7E9-D8F2-4E45-B42C-7AE3AB48B710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7526D7E9-D8F2-4E45-B42C-7AE3AB48B710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C81F6242-83D6-4982-A89D-1ABE498003C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C81F6242-83D6-4982-A89D-1ABE498003C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C81F6242-83D6-4982-A89D-1ABE498003C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C81F6242-83D6-4982-A89D-1ABE498003C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

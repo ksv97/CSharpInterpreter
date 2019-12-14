@@ -14,7 +14,7 @@
         </ScrollViewer>
 
         <Label Content="Result" Canvas.Left="460" Canvas.Top="10" RenderTransformOrigin="0.461,0.427"/>
-        <Button x:Name="BtnScan" Content="Scan" Canvas.Left="10" Canvas.Top="359" Width="75" Click="BtnScan_Click"/>
+        <Button x:Name="BtnScan" Content="Parse" Canvas.Left="10" Canvas.Top="359" Width="75" Click="BtnScan_Click"/>
 
     </Canvas>
 </Window>
