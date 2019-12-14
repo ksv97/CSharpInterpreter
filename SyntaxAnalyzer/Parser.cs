@@ -344,7 +344,6 @@ namespace SyntaxAnalyzer
                 return false;
             }
 
-            NextToken();
             while (CurrentTokenType == TokenType.LOGICAL_AND)
             {
                 NextToken();
