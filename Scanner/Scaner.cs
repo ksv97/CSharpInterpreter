@@ -58,6 +58,14 @@ namespace Scanner
             }
         }
 
+        public Token PreviousToken
+        {
+            get
+            {
+                return currentTokenToSend == 0 ? null : ResultTokens[--currentTokenToSend];
+            }
+        }
+
         public Scaner(string text)
         {
             this.TextToScan = text;

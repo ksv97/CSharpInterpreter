@@ -422,7 +422,11 @@ namespace SyntaxAnalyzer
                 {
                     return NumExpression();
                 }
-                else return false;
+                else
+                {
+                    PreviousToken(); // rollback num expression found token.
+                    return false;
+                }
             }
 
             if (BoolExpression() == true)
@@ -431,7 +435,11 @@ namespace SyntaxAnalyzer
                 {
                     return BoolExpression();
                 }
-                else return false;
+                else
+                {
+                    PreviousToken();
+                    return false;
+                }
             }
 
             if (StringExpression() == true)
@@ -440,7 +448,12 @@ namespace SyntaxAnalyzer
                 {
                     return StringExpression();
                 }
-                else return false;
+                else
+                {
+                    PreviousToken();
+                    return false;
+                }
+                    
             }
 
             return false;
@@ -758,6 +771,8 @@ namespace SyntaxAnalyzer
         }
 
         private void NextToken() => this.currentToken = scaner.NextToken;
+
+        private void PreviousToken() => this.currentToken = scaner.PreviousToken;
 
         private void ThrowInvalidTokenException()
         {
