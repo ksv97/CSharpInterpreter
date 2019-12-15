@@ -26,6 +26,9 @@ namespace CSHarpInterpreter
         private Scaner scaner;
         private Parser parser;
 
+        private string mainTextFile = "mainText.txt";
+        private string testFile = "test.txt";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +42,7 @@ namespace CSHarpInterpreter
 
         private void LoadExampleText()
         {
-            using (TextReader reader = File.OpenText("mainText.txt"))
+            using (TextReader reader = File.OpenText(testFile))
             {
                 TxtBoxInput.Text += reader.ReadToEnd();
             }
@@ -79,17 +82,21 @@ namespace CSHarpInterpreter
 
         private void BtnScan_Click(object sender, RoutedEventArgs e)
         {
-            this.ScanText();
-            this.parser = new Parser(this.scaner);
+            this.ScanText();           
+        }
+
+        private void BtnParse_Click(object sender, RoutedEventArgs e)
+        {
             try
             {
+                this.parser = new Parser(this.scaner);
                 parser.Parse();
                 MessageBox.Show("Parse completed successfully!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Parse error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+            }
         }
     }
 }
