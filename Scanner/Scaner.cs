@@ -140,7 +140,8 @@ namespace Scanner
                     return;
                 }
 
-                ThrowParseErrorException("Invalid token '/'");
+                //ThrowParseErrorException("Invalid token '/'");
+                currentPosition--; // maybe it's not a comment, so return back
             }
         }
 
