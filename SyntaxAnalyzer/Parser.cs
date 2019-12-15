@@ -182,13 +182,11 @@ namespace SyntaxAnalyzer
             if (CurrentTokenType == TokenType.PARANTHESIS_START)
             {
                 NextToken();
-                bool numExpressionResult = NumExpression();
-                if (numExpressionResult == false)
+                if (NumExpression() == false)
                 {
                     return false;
                 }
-
-                NextToken();
+                
                 if (CurrentTokenType == TokenType.PARANTHESIS_END)
                 {
                     NextToken();
@@ -590,16 +588,16 @@ namespace SyntaxAnalyzer
             NextToken();
 
             if (NumExpression() == true)
-            {                
-                return true;
+            {                   
+                return CheckSemicolonAndAdvance();
             }
             else if (StringExpression() == true)
             {
-                return true;
+                return CheckSemicolonAndAdvance();
             }
             else if (BoolExpression() == true)
             {
-                return true;
+                return CheckSemicolonAndAdvance();
             }
 
             return false;
@@ -778,6 +776,17 @@ namespace SyntaxAnalyzer
 
             NextToken();
             return true;
+        }
+
+        private bool CheckSemicolonAndAdvance()
+        {
+            if (CurrentTokenType == TokenType.SEMICOLON)
+            {
+                NextToken();
+                return true;
+            }
+
+            return false;
         }
 
         private void NextToken() => this.currentToken = scaner.NextToken;
