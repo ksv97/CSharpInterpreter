@@ -388,9 +388,17 @@ namespace SyntaxAnalyzer
 
                 if (CurrentTokenType == TokenType.PARANTHESIS_END)
                 {
+                    NextToken();
                     return true;
                 }
                 else return false;                
+            }
+
+            if (CurrentTokenType == TokenType.TRUE
+               || CurrentTokenType == TokenType.FALSE)
+            {
+                NextToken();
+                return true;
             }
 
             if (BoolOp() == true)
@@ -398,16 +406,13 @@ namespace SyntaxAnalyzer
                 return true;
             }
 
-            if (CurrentTokenType == TokenType.VARIABLE
-               || CurrentTokenType == TokenType.TRUE
-               || CurrentTokenType == TokenType.FALSE)
+            if (CurrentTokenType == TokenType.VARIABLE)              
             {
                 NextToken();
                 return true;
             }
 
-            return false;
-            
+            return false;            
         }
 
         private bool BoolOp()
@@ -629,6 +634,11 @@ namespace SyntaxAnalyzer
             }
 
             NextToken();
+            if (currentToken == null)
+            {
+                return true;
+            }
+
             if (AfterCondition() == false)
             {
                 return false;
