@@ -30,11 +30,6 @@ namespace CSHarpInterpreter
             LoadExampleText();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void LoadExampleText()
         {
             using (TextReader reader = File.OpenText("test.txt"))
@@ -48,12 +43,26 @@ namespace CSHarpInterpreter
             this.TxtBlockResult.Clear();
             scaner = new Scaner(this.TxtBoxInput.Text);
 
-            scaner.ScanText();
+            string exc = scaner.ScanText();
 
-            foreach (Token t in this.scaner.ResultTokens)
+            if (string.IsNullOrWhiteSpace(exc))
             {
-                this.TxtBlockResult.Text += t.Value + " - " + t.TokenType.ToString("G");
-                this.TxtBlockResult.Text += Environment.NewLine;
+                int tokenIndex = 0;
+                foreach (Token t in this.scaner.ResultTokens)
+                {
+                    this.TxtBlockResult.Text += "(" + tokenIndex + "): " + t.Value + " - " + t.TokenType.ToString("G");
+                    this.TxtBlockResult.Text += Environment.NewLine;
+                    tokenIndex++;
+                }
+
+                SyntaxAnalyzer analyzer = new SyntaxAnalyzer(scaner.ResultTokens, scaner.constsAndVariables);
+                string syntaxException = analyzer.StartSyntaxAnalysis();
+                this.Errors.Text = "";
+                this.Errors.Text += syntaxException;
+            }
+            else
+            {
+                this.Errors.Text += exc + "\n";
             }
         }
     }

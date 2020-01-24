@@ -43,10 +43,14 @@
   <ItemGroup>
     <Compile Include="CharExtensions.cs" />
     <Compile Include="Dictionaries.cs" />
+    <Compile Include="IncorrectSyntaxException.cs" />
     <Compile Include="Scaner.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TokenType.cs" />
+    <Compile Include="UnrecognizedDoubleException.cs" />
+    <Compile Include="UnsupportedSymbolException.cs" />
+    <Compile Include="Variable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

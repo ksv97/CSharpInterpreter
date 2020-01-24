@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CSHarpInterpreter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="681.463">
+        Title="TS Интерпретатор" Height="686.759" Width="681.463">
     <Canvas>
-        <TextBox x:Name="TxtBoxInput" Height="324" Canvas.Left="10" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Top="30" Width="354" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" TextChanged="TextBox_TextChanged"/>
-        <Label Content="Input text" Canvas.Left="109" Canvas.Top="5"/>
-        <ScrollViewer Canvas.Left="387" Canvas.Top="40">
-            <TextBox x:Name="TxtBlockResult" Canvas.Left="386" IsReadOnly="True" TextWrapping="Wrap"  Canvas.Top="30" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Height="313" Width="234"/>
+        <TextBox x:Name="TxtBoxInput" Height="324" Canvas.Left="10" TextWrapping="Wrap" AcceptsReturn="True" Canvas.Top="30" Width="354" />
+        <Label Content="Анализируемый код" Canvas.Left="109" Canvas.Top="5"/>
+        <ScrollViewer Canvas.Left="387" Canvas.Top="30">
+            <TextBox x:Name="TxtBlockResult" Canvas.Left="386" IsReadOnly="True" TextWrapping="Wrap"  Canvas.Top="30" Height="324" Width="234"/>
         </ScrollViewer>
 
-        <Label Content="Result" Canvas.Left="460" Canvas.Top="10" RenderTransformOrigin="0.461,0.427"/>
-        <Button x:Name="BtnScan" Content="Scan" Canvas.Left="10" Canvas.Top="359" Width="75" Click="BtnScan_Click"/>
+        <Label Content="Результат анализа" Canvas.Left="460" Canvas.Top="5" RenderTransformOrigin="0.461,0.427"/>
+        <Button x:Name="BtnScan" Content="Сканировать" Canvas.Left="300" Canvas.Top="359" Width="75" Click="BtnScan_Click"/>
 
+        <Label Content="Ошибки" Canvas.Left="310" Canvas.Top="379" />
+        <TextBox x:Name="Errors" Canvas.Left="10" Width="651" Height="200" Canvas.Top="399" />
     </Canvas>
 </Window>

@@ -11,14 +11,22 @@ namespace Scanner
     /// </summary>
     public class Token
     {
-        public readonly TokenType TokenType;
+        public int Id;
 
-        public readonly string Value;
+        public TokenType TokenType;
+
+        public string Value;
+
+        public string Type;
 
         public Token(TokenType type, string value)
         {
             this.TokenType = type;
             this.Value = value;
+        }
+        public Token()
+        {
+
         }
     }
 }

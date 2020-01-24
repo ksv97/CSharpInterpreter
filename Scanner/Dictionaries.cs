@@ -16,17 +16,27 @@ namespace Scanner
         /// </summary>
         public static readonly List<string> LanguageKeywords = new List<string>()
         {
-            "sqr",
-            "sqrt",
-            "print",
-            "int",
-            "double",
-            "string",
-            "boolean",
+            "console.log",
+            "var",
+            "const",
             "if",
             "else",
-            "do",
-            "while"
+            "for",
+            "function"
+        };
+
+        public static readonly List<string> UnresolvedSymbols = new List<string>()
+        {
+            "~",
+            "`",
+            "@",
+            "#",
+            "№",
+            "$",
+            "^",
+            ":",
+            "?",
+            ""
         };
     }
 }

@@ -13,14 +13,12 @@ namespace Scanner
     {
         // language keywords part
         VARIABLE,
-        LANGUAGE_KEYWORD,
+        KEYWORD_LANG,
 
         // consts part
         BOOLEAN_TRUE,
         BOOLEAN_FALSE,
-        INT_CONST,
-        DOUBLE_CONST,
-        STRING_CONST,
+        VAR_CONST,
 
         // math operations
         PLUS,
@@ -46,6 +44,10 @@ namespace Scanner
         CODEBLOCK_START,
         CODEBLOCK_END,
         PARANTHESIS_START,
-        PARANTHESIS_END
+        PARANTHESIS_END,
+
+        COMMENT,
+
+        MARK
     }
 }

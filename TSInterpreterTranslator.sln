@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSHarpInterpreter", "CSHarpInterpreter\CSHarpInterpreter.csproj", "{804FB83D-E93C-4E11-A443-A9F6255C8D46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSInterpreter", "CSHarpInterpreter\TSInterpreter.csproj", "{804FB83D-E93C-4E11-A443-A9F6255C8D46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner", "Scanner\Scanner.csproj", "{CE942BEA-8651-4243-A78C-EF2203418078}"
 EndProject

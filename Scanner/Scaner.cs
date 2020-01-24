@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Scanner
 {
@@ -15,15 +13,19 @@ namespace Scanner
         /// Token list that's received as a result of text scan
         /// </summary>
         public readonly List<Token> ResultTokens = new List<Token>();
+        public readonly List<Variable> constsAndVariables = new List<Variable>();
 
         /// <summary>
         /// A text to be scanned
         /// </summary>
         public readonly string TextToScan;
 
-        private StringBuilder currentChain = new StringBuilder();
+        private readonly StringBuilder currentChain = new StringBuilder();
         private int currentPosition = 0;
 
+        /// <summary>
+        /// Currently searched char
+        /// </summary>
         private char currentChar
         {
             get
@@ -32,38 +34,113 @@ namespace Scanner
             }
         }
 
+        /// <summary>
+        /// Creating Scanner object
+        /// </summary>
+        /// <param name="text">Text to parse</param>
         public Scaner(string text)
         {
             this.TextToScan = text;
         }
 
-        public void ScanText ()
+        public string ScanText ()
         {
-            for (currentPosition = 0; currentPosition < TextToScan.Length; currentPosition++)
+            try
             {
-                SkipWhitespaces();
-                ScanForMeaningfulDelimeters();
-                ScanForNumericConstant();
-                ScanForKeywordsAndIdentifiers();
-                ScanForStringConstants();
+                for (currentPosition = 0; currentPosition < TextToScan.Length; currentPosition++)
+                {
+                    if (!Dictionaries.UnresolvedSymbols.Contains(currentChar.ToString()))
+                    {
+                        SkipWhitespaces();
+                        if (!ScanForComment())
+                        {
+                            ScanForMeaningfulDelimeters();
+                            ScanForNumericConstant();
+                            ScanForKeywordsAndIdentifiers();
+                            ScanForStringConstants();
+                        }
+                    }
+                    else
+                    {
+                        throw new UnsupportedSymbolException("Unsupported symbol on position " + currentPosition);
+                    }
+                }
+                return "";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
             }
         }
 
         /// <summary>
         /// Adds current char to chain and advance position
         /// </summary>
-        private void AddCharToChainAndAdvance ()
+        private void AddCharToChainAndAdvance()
         {
             currentChain.Append(currentChar);
             currentPosition++;
         }
 
+        /// <summary>
+        /// Add all digits to current chain
+        /// </summary>
+        private void AddAllDigitsToCurrentChain()
+        {
+            while (currentChar.IsDigit())
+            {
+                AddCharToChainAndAdvance();
+            }
+        }
+
+        /// <summary>
+        /// Adding dot to chain
+        /// </summary>
+        private void AddDotToCurrentChain()
+        {
+            currentChain.Append(".");
+            currentPosition++;
+        }
+
+        /// <summary>
+        /// Adding comment to chain
+        /// </summary>
+        private void AddCommentToChain()
+        {
+            while (currentChar != '\n')
+            {
+                currentChain.Append(currentChar);
+                currentPosition++;
+            }
+
+            Token newToken = new Token(TokenType.COMMENT, currentChain.ToString());
+            ResultTokens.Add(newToken);
+            currentChain.Clear();
+        }
+
+        /// <summary>
+        /// Skipping whitespaces
+        /// </summary>
         private void SkipWhitespaces()
         {
             while (currentChar.IsWhiteSpace())
             {
                 currentPosition++;
             }
+        }
+
+        /// <summary>
+        /// Scan For comment token
+        /// </summary>
+        private bool ScanForComment()
+        {
+            if(currentChar == '/' && TextToScan[currentPosition+1] == '/')
+            {
+                AddCommentToChain();
+                return true;
+            }
+
+            return false;
         }
 
         private void ScanForNumericConstant()
@@ -81,38 +158,41 @@ namespace Scanner
             }
             else if (isMinusEncountered) // if we encountered minus sign, digits should follow them. If that's not happening, it's parse error in terms of language.
             {
-                throw new Exception("Parse error: after '-' sign there's no digit. It's not possible");
+                throw new IncorrectSyntaxException("Parse error: after '-' sign there's no digit. It's not possible");
             }
         }
 
-        private void CreateNumericConstToken ()
+        private void CreateNumericConstToken()
         {
             AddAllDigitsToCurrentChain();
 
             if (currentChar.IsDoubleConstDelimeter())
             {
+                AddDotToCurrentChain();
                 AddAllDigitsToCurrentChain();
-                AddTokenFromCurrentChainValue(TokenType.DOUBLE_CONST);
+                if(currentChar == '.')
+                {
+                    throw new UnrecognizedDoubleException("Unrecognized double variable on position " + currentPosition);
+                }
+                AddTokenFromCurrentChainValue(TokenType.VAR_CONST);
+                
+                currentPosition--;
             }
             else
             {
-                AddTokenFromCurrentChainValue(TokenType.INT_CONST);
+                AddTokenFromCurrentChainValue(TokenType.VAR_CONST);
+                currentPosition--;
             }
         }
 
-        private void AddAllDigitsToCurrentChain()
-        {
-            while (currentChar.IsDigit())
-            {
-                AddCharToChainAndAdvance();
-            }
-        }
-
-        private void ScanForMeaningfulDelimeters ()
+        /// <summary>
+        /// Search meaningful delimiters
+        /// </summary>
+        private void ScanForMeaningfulDelimeters()
         {
             switch (currentChar)
             {
-                case '{': ; AddTokenWithCurrentCharValue(TokenType.CODEBLOCK_START); break;
+                case '{': AddTokenWithCurrentCharValue(TokenType.CODEBLOCK_START); break;
                 case '}': AddTokenWithCurrentCharValue(TokenType.CODEBLOCK_END); break;
                 case '/': AddTokenWithCurrentCharValue(TokenType.DIV); break;
                 case '%': AddTokenWithCurrentCharValue(TokenType.MOD); break;
@@ -150,7 +230,7 @@ namespace Scanner
                             ResultTokens.Add(new Token(TokenType.LOGICAL_OR, "||"));
                             break;
                         }
-                        else throw new Exception("Parse error after symbol '|' at position" + currentPosition);
+                        else throw new IncorrectSyntaxException("Error: unallowed symbol after '|' at position " + currentPosition);
                     }
                 case '&':
                     {
@@ -160,10 +240,8 @@ namespace Scanner
                             ResultTokens.Add(new Token(TokenType.LOGICAL_AND, "&&"));
                             break;
                         }
-                        else throw new Exception("Parse error after symbol '&' at position" + currentPosition);
+                        else throw new IncorrectSyntaxException("Error: unallowed symbol after '&' at position " + currentPosition);
                     }
-
-
             }
         }
 
@@ -172,38 +250,56 @@ namespace Scanner
         /// </summary>
         private void ScanForKeywordsAndIdentifiers()
         {
-            while (currentChar <= 'z' && currentChar >= 'a')
+            if ('a' <= currentChar && currentChar <= 'z')
             {
-                AddCharToChainAndAdvance();
-            }
-
-            if (currentChain.Length > 0)
-            {
-                string chain = currentChain.ToString();
-                switch (chain)
+                while ('a' <= currentChar && currentChar <= 'z' || currentChar == '.' || '0' <=currentChar && currentChar <= '9')
                 {
-                    case "true":
-                        {
-                            AddTokenFromCurrentChainValue(TokenType.BOOLEAN_TRUE);
-                            return;
-                        }
-                    case "false":
-                        {
-                            AddTokenFromCurrentChainValue(TokenType.BOOLEAN_FALSE);
-                            return;
-                        }
+                    AddCharToChainAndAdvance();
                 }
 
-                if (Dictionaries.LanguageKeywords.Contains(chain))
+                if (currentChain.Length > 0)
                 {
-                    AddTokenFromCurrentChainValue(TokenType.LANGUAGE_KEYWORD);
-                    return;
-                }
+                    string chain = currentChain.ToString();
 
-                AddTokenFromCurrentChainValue(TokenType.VARIABLE);
+                    //Check for bool values
+                    if (chain.Length >= 4)
+                    {
+                        switch (chain)
+                        {
+                            case "true":
+                                {
+                                    AddTokenFromCurrentChainValue(TokenType.BOOLEAN_TRUE);
+                                    currentPosition--;
+                                    return;
+                                }
+                            case "false":
+                                {
+                                    AddTokenFromCurrentChainValue(TokenType.BOOLEAN_FALSE);
+                                    currentPosition--;
+                                    return;
+                                }
+                        }
+                    }
+
+                    //Check for language keywords
+                    if (Dictionaries.LanguageKeywords.Contains(chain))
+                    {
+                        AddTokenFromCurrentChainValue(TokenType.KEYWORD_LANG);
+                        currentPosition--;
+                        return;
+                    }
+
+                    //Variable in other cases
+                    constsAndVariables.Add(new Variable(chain, false));
+                    AddTokenFromCurrentChainValue(TokenType.VARIABLE);
+                    currentPosition--;
+                }
             }
         }
 
+        /// <summary>
+        /// Search currentChain for text constants
+        /// </summary>
         private void ScanForStringConstants()
         {
             if (currentChar == '"')
@@ -212,22 +308,24 @@ namespace Scanner
                 {
                     AddCharToChainAndAdvance();
                 }
-                while (currentChar != '"');
+                while (currentChar != '"' || TextToScan[currentPosition-1] == '\\');
                 AddCharToChainAndAdvance();
-                AddTokenFromCurrentChainValue(TokenType.STRING_CONST);
+                currentPosition--;
+                AddTokenFromCurrentChainValue(TokenType.VAR_CONST);
             }
         }
 
         /// <summary>
         /// Adds delimeter with 2 characters or 1 (e.g. = or ==, ! or !=)
         /// </summary>
-        private void AddMeaningfulDelimetersWithTwoCharacters (char firstChar, char secondChar, TokenType caseOneChar, TokenType caseTwoChars)
+        private void AddMeaningfulDelimetersWithTwoCharacters(char firstChar, char secondChar, TokenType caseOneChar, TokenType caseTwoChars)
         {
-            currentPosition++;
-            if (currentChar == secondChar)
+            //currentPosition++;
+            if (TextToScan[currentPosition + 1] == secondChar)
             {
                 string tokenValue = firstChar.ToString() + secondChar.ToString();
                 ResultTokens.Add(new Token(caseTwoChars, tokenValue));
+                currentPosition++;
             }
             else ResultTokens.Add(new Token(caseOneChar, firstChar.ToString()));
         }
@@ -236,10 +334,12 @@ namespace Scanner
         /// Add the token with current char value to results token set
         /// </summary>
         /// <param name="tokenType"></param>
-        private void AddTokenWithCurrentCharValue (TokenType tokenType)
+        private void AddTokenWithCurrentCharValue(TokenType tokenType)
         {
             Token newToken = new Token(tokenType, currentChar.ToString());
             ResultTokens.Add(newToken);
+            if(TextToScan[currentPosition +1].IsWhiteSpace())
+                currentPosition++;
         }
 
         /// <summary>
